@@ -1,0 +1,39 @@
+# Binaries and Executables
+*.exe
+*.dll
+*.o
+*.obj
+*.so
+*.dylib
+
+# Weights and Models
+*.bin
+*.pt
+*.pth
+*.h5
+
+# Python Artifacts
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+.env
+.venv
+pip-log.txt
+pip-delete-this-directory.txt
+
+# VS Code and IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Project Specific
+sandbox/compress_bridge/src/brain_weights.bin
+sandbox/compress_bridge/src/interactive_brain.exe
+sandbox/compress_bridge/bin/
+sandbox/compress_bridge/brain/
+*.weights
