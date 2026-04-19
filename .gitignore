@@ -32,6 +32,7 @@ pip-delete-this-directory.txt
 *.swo
 
 # Project Specific
+.agents/
 sandbox/compress_bridge/src/brain_weights.bin
 sandbox/compress_bridge/src/interactive_brain.exe
 sandbox/compress_bridge/bin/
