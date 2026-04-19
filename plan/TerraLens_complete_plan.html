@@ -1,0 +1,239 @@
+
+<style>
+.phase-card { background: var(--color-background-primary); border: 0.5px solid var(--color-border-tertiary); border-radius: var(--border-radius-lg); margin-bottom: 1.5rem; overflow: hidden; }
+.phase-header { padding: 14px 20px; border-bottom: 0.5px solid var(--color-border-tertiary); }
+.phase-title { font-size: 15px; font-weight: 500; color: var(--color-text-primary); margin: 0 0 2px; }
+.phase-sub { font-size: 12px; color: var(--color-text-secondary); margin: 0; }
+.phase-body { padding: 16px 20px; }
+.section-label { font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.06em; color: var(--color-text-tertiary); margin: 0 0 8px; }
+.task-row { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 8px; }
+.task-dot { width: 6px; height: 6px; border-radius: 50%; margin-top: 6px; flex-shrink: 0; }
+.task-text { font-size: 13px; color: var(--color-text-primary); line-height: 1.5; }
+.task-sub { font-size: 12px; color: var(--color-text-secondary); margin-top: 2px; }
+.badge { display: inline-block; font-size: 11px; padding: 2px 8px; border-radius: 99px; margin-right: 4px; margin-bottom: 4px; }
+.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 12px; }
+.mini-card { background: var(--color-background-secondary); border-radius: var(--border-radius-md); padding: 10px 12px; }
+.mini-label { font-size: 11px; color: var(--color-text-tertiary); margin: 0 0 4px; }
+.mini-val { font-size: 13px; font-weight: 500; color: var(--color-text-primary); margin: 0; }
+.divider { border: none; border-top: 0.5px solid var(--color-border-tertiary); margin: 14px 0; }
+.code-block { background: var(--color-background-secondary); border-radius: var(--border-radius-md); padding: 10px 14px; font-family: var(--font-mono); font-size: 12px; color: var(--color-text-primary); line-height: 1.6; margin-top: 8px; white-space: pre; overflow-x: auto; }
+.tag-row { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+.tag { font-size: 11px; padding: 3px 10px; border-radius: 99px; border: 0.5px solid var(--color-border-secondary); color: var(--color-text-secondary); }
+.action-btn { display: inline-block; font-size: 12px; padding: 6px 14px; border-radius: var(--border-radius-md); border: 0.5px solid var(--color-border-secondary); background: var(--color-background-primary); color: var(--color-text-primary); cursor: pointer; margin-top: 10px; margin-right: 6px; }
+.action-btn:hover { background: var(--color-background-secondary); }
+</style>
+
+<h2 class="sr-only">TerraLens complete build plan — all phases, tasks, and technical details</h2>
+
+<div style="margin-bottom: 1.5rem;">
+  <p style="font-size: 22px; font-weight: 500; margin: 0 0 4px; color: var(--color-text-primary);">TerraLens — complete build plan</p>
+  <p style="font-size: 13px; color: var(--color-text-secondary); margin: 0;">5 phases · 24–30 months · Python → C++ → Research paper</p>
+</div>
+
+<div class="phase-card">
+  <div class="phase-header" style="background: #EEEDFE;">
+    <p class="phase-title" style="color: #3C3489;">Phase 0 — Foundation (months 1–2)</p>
+    <p class="phase-sub" style="color: #534AB7;">Learn the tools. Understand the math. Set up environment.</p>
+  </div>
+  <div class="phase-body">
+    <p class="section-label">What to learn</p>
+    <div class="task-row"><div class="task-dot" style="background:#534AB7;"></div><div><div class="task-text">Python basics — variables, loops, functions, classes</div><div class="task-sub">Resource: Python.org tutorial (free, 1 week)</div></div></div>
+    <div class="task-row"><div class="task-dot" style="background:#534AB7;"></div><div><div class="task-text">NumPy — arrays, matrix math, dot products</div><div class="task-sub">This is the math of neural networks in code form</div></div></div>
+    <div class="task-row"><div class="task-dot" style="background:#534AB7;"></div><div><div class="task-text">Matplotlib — plotting loss curves, 3D landscapes</div><div class="task-sub">You need to SEE the terrain your system is navigating</div></div></div>
+    <div class="task-row"><div class="task-dot" style="background:#534AB7;"></div><div><div class="task-text">Basic calculus — what a derivative (gradient) means</div><div class="task-sub">Khan Academy, free. Focus on: slope, rate of change, chain rule</div></div></div>
+    <div class="task-row"><div class="task-dot" style="background:#534AB7;"></div><div><div class="task-text">What is a neural network — forward pass, loss, backprop</div><div class="task-sub">3Blue1Brown "Neural Networks" series on YouTube (4 videos, free)</div></div></div>
+    <hr class="divider">
+    <p class="section-label">Environment setup</p>
+    <div class="code-block">pip install numpy matplotlib torch jupyter</div>
+    <div class="task-row" style="margin-top:10px;"><div class="task-dot" style="background:#534AB7;"></div><div class="task-text">Use VS Code as your editor (free, download from code.visualstudio.com)</div></div>
+    <div class="task-row"><div class="task-dot" style="background:#534AB7;"></div><div class="task-text">Use Jupyter notebooks to see code + output together visually</div></div>
+    <div class="task-row"><div class="task-dot" style="background:#534AB7;"></div><div class="task-text">Create a GitHub account — save all your code there from day 1</div></div>
+    <hr class="divider">
+    <p class="section-label">End of phase goal</p>
+    <div class="task-row"><div class="task-dot" style="background:#3C3489;"></div><div class="task-text">You can write a 3-neuron network from scratch in NumPy and plot its loss</div></div>
+  </div>
+</div>
+
+<div class="phase-card">
+  <div class="phase-header" style="background: #E1F5EE;">
+    <p class="phase-title" style="color: #085041;">Phase 1 — Prove the core idea (months 3–6)</p>
+    <p class="phase-sub" style="color: #0F6E56;">Build satellite + radar + skip on a tiny network. Show it works.</p>
+  </div>
+  <div class="phase-body">
+    <p class="section-label">Step 1 — build a tiny network by hand</p>
+    <div class="code-block">terralens/
+├── experiments/
+│   └── tiny_network.py    ← start here
+├── radar/
+│   └── probe.py           ← build second
+└── skip/
+    └── engine.py          ← build third</div>
+    <div class="task-row" style="margin-top:10px;"><div class="task-dot" style="background:#0F6E56;"></div><div><div class="task-text">Create network with only 2 weights (w1, w2)</div><div class="task-sub">Why 2? Because you can plot the loss landscape as a real 3D surface and SEE it</div></div></div>
+    <div class="task-row"><div class="task-dot" style="background:#0F6E56;"></div><div><div class="task-text">Plot the full loss landscape — every possible (w1, w2) combination</div><div class="task-sub">Use matplotlib 3D plot. You will literally see the mountains and valleys</div></div></div>
+    <div class="task-row"><div class="task-dot" style="background:#0F6E56;"></div><div><div class="task-text">Mark where the global minimum is (the true deepest valley)</div><div class="task-sub">In 2D you can compute this exactly — use this as ground truth to test your system</div></div></div>
+    <hr class="divider">
+    <p class="section-label">Step 2 — build the radar</p>
+    <div class="task-row"><div class="task-dot" style="background:#0F6E56;"></div><div><div class="task-text">At any point (w1, w2), compute the gradient (direction of slope)</div><div class="task-sub">Formula: ∂Loss/∂w1 and ∂Loss/∂w2 — NumPy can do this</div></div></div>
+    <div class="task-row"><div class="task-dot" style="background:#0F6E56;"></div><div><div class="task-text">Compute the curvature (Hessian) — is this a valley or a mountain?</div><div class="task-sub">Second derivative: ∂²Loss/∂w² — positive = valley, negative = mountain</div></div></div>
+    <div class="task-row"><div class="task-dot" style="background:#0F6E56;"></div><div><div class="task-text">Visualize radar output on top of your 3D landscape plot</div><div class="task-sub">Draw arrows showing detected direction at each point. Verify visually it is correct.</div></div></div>
+    <hr class="divider">
+    <p class="section-label">Step 3 — build the satellite scanner</p>
+    <div class="task-row"><div class="task-dot" style="background:#0F6E56;"></div><div><div class="task-text">Divide the (w1, w2) space into a grid of boxes</div><div class="task-sub">Start with 10×10 = 100 boxes. Each box covers a region of the landscape.</div></div></div>
+    <div class="task-row"><div class="task-dot" style="background:#0F6E56;"></div><div><div class="task-text">Sample 1 random point per box, measure loss there</div><div class="task-sub">This is your satellite scan — cheap global overview</div></div></div>
+    <div class="task-row"><div class="task-dot" style="background:#0F6E56;"></div><div><div class="task-text">Keep only the 20% lowest-loss boxes. Discard the rest.</div><div class="task-sub">This eliminates 80% of search space immediately. Measure how much time saved.</div></div></div>
+    <hr class="divider">
+    <p class="section-label">Step 4 — build the GPS (4-corner check)</p>
+    <div class="task-row"><div class="task-dot" style="background:#0F6E56;"></div><div><div class="task-text">For each surviving box, check only its 4 corners</div><div class="task-sub">Points: (x_min,y_min), (x_min,y_max), (x_max,y_min), (x_max,y_max)</div></div></div>
+    <div class="task-row"><div class="task-dot" style="background:#0F6E56;"></div><div><div class="task-text">If all 4 corners have high loss → skip entire box</div><div class="task-sub">If any corner is low → zoom in and subdivide that box into 4 smaller boxes</div></div></div>
+    <hr class="divider">
+    <p class="section-label">Step 5 — build the skip engine</p>
+    <div class="task-row"><div class="task-dot" style="background:#0F6E56;"></div><div><div class="task-text">When radar detects mountain (curvature negative) → calculate skip distance</div><div class="task-sub">Skip distance = proportional to curvature magnitude. Steep mountain = small skip. Shallow = large.</div></div></div>
+    <div class="task-row"><div class="task-dot" style="background:#0F6E56;"></div><div><div class="task-text">Jump to new position. Run radar check again immediately.</div></div></div>
+    <div class="task-row"><div class="task-dot" style="background:#0F6E56;"></div><div><div class="task-text">If new position is better → stay. If worse → try different skip direction.</div></div></div>
+    <hr class="divider">
+    <p class="section-label">Step 6 — compare results</p>
+    <div class="grid2">
+      <div class="mini-card"><p class="mini-label">Measure this</p><p class="mini-val">Normal SGD vs TerraLens: how many steps to find minimum?</p></div>
+      <div class="mini-card"><p class="mini-label">Measure this</p><p class="mini-val">How close to the true global minimum does each method get?</p></div>
+      <div class="mini-card"><p class="mini-label">Measure this</p><p class="mini-val">How many points evaluated total? (compute cost)</p></div>
+      <div class="mini-card"><p class="mini-label">Measure this</p><p class="mini-val">How many times did skip engine successfully escape local minima?</p></div>
+    </div>
+    <hr class="divider">
+    <p class="section-label">End of phase goal</p>
+    <div class="task-row"><div class="task-dot" style="background:#085041;"></div><div class="task-text">A graph showing TerraLens finds the minimum faster than SGD on your tiny 2-weight network. This is your first proof.</div></div>
+  </div>
+</div>
+
+<div class="phase-card">
+  <div class="phase-header" style="background: #FAEEDA;">
+    <p class="phase-title" style="color: #633806;">Phase 2 — Map-while-building (months 7–12)</p>
+    <p class="phase-sub" style="color: #854F0B;">Implement your key novel idea: track landscape as neurons are added.</p>
+  </div>
+  <div class="phase-body">
+    <p class="section-label">The core novel idea to implement</p>
+    <div class="task-row"><div class="task-dot" style="background:#854F0B;"></div><div><div class="task-text">Add neuron 1 → measure landscape shape → record in map</div></div></div>
+    <div class="task-row"><div class="task-dot" style="background:#854F0B;"></div><div><div class="task-text">Add neuron 2 → measure HOW landscape changed → record the delta</div></div></div>
+    <div class="task-row"><div class="task-dot" style="background:#854F0B;"></div><div><div class="task-text">Continue for all neurons → by end you have full landscape history</div></div></div>
+    <div class="task-row"><div class="task-dot" style="background:#854F0B;"></div><div><div class="task-text">Use history to predict: where will good valleys be before training even starts?</div></div></div>
+    <hr class="divider">
+    <p class="section-label">New code files needed</p>
+    <div class="code-block">terralens/
+├── map/
+│   ├── landscape.py       ← stores the map
+│   ├── tracker.py         ← measures change per neuron added
+│   └── predictor.py       ← predicts good regions from history
+├── satellite/
+│   └── scanner.py         ← already built in phase 1
+├── gps/
+│   └── grid.py            ← already built in phase 1
+├── radar/
+│   └── probe.py           ← already built in phase 1
+└── skip/
+    └── engine.py          ← already built in phase 1</div>
+    <hr class="divider">
+    <p class="section-label">Key math to implement in tracker.py</p>
+    <div class="task-row" style="margin-top:8px;"><div class="task-dot" style="background:#854F0B;"></div><div><div class="task-text">Eigenvalue analysis of Hessian matrix at key points</div><div class="task-sub">Eigenvalues tell you the shape of landscape in every direction. Positive = valley. Negative = mountain.</div></div></div>
+    <div class="task-row"><div class="task-dot" style="background:#854F0B;"></div><div><div class="task-text">Track which eigenvalues change most when each neuron is added</div><div class="task-sub">This tells you which neurons are "shaping" the landscape most. Critical insight.</div></div></div>
+    <div class="task-row"><div class="task-dot" style="background:#854F0B;"></div><div><div class="task-text">Record: did adding this neuron create new valleys? Destroy old ones? Shift minimum location?</div></div></div>
+    <hr class="divider">
+    <p class="section-label">End of phase goal</p>
+    <div class="task-row"><div class="task-dot" style="background:#633806;"></div><div class="task-text">System builds a map during construction. Training starts with map already available. Training is faster than Phase 1 result.</div></div>
+  </div>
+</div>
+
+<div class="phase-card">
+  <div class="phase-header" style="background: #E1F5EE;">
+    <p class="phase-title" style="color: #085041;">Phase 3 — Real integration with PyTorch (months 13–18)</p>
+    <p class="phase-sub" style="color: #0F6E56;">Plug TerraLens into the actual AI training ecosystem.</p>
+  </div>
+  <div class="phase-body">
+    <p class="section-label">Integration approach — wrapper first</p>
+    <div class="task-row"><div class="task-dot" style="background:#0F6E56;"></div><div><div class="task-text">Learn PyTorch hooks — special insertion points in training loop</div><div class="task-sub">PyTorch docs: "Hooks for Modules". Free. This is how you plug in without rewriting PyTorch.</div></div></div>
+    <div class="task-row"><div class="task-dot" style="background:#0F6E56;"></div><div><div class="task-text">Build TerraLensOptimizer class that wraps standard Adam optimizer</div><div class="task-sub">Before each weight update: check map. If skip signal → override update direction.</div></div></div>
+    <div class="task-row"><div class="task-dot" style="background:#0F6E56;"></div><div><div class="task-text">Test on MNIST dataset (handwritten digits) — standard benchmark</div><div class="task-sub">Every AI paper tests on MNIST first. Makes your results comparable to existing work.</div></div></div>
+    <hr class="divider">
+    <p class="section-label">New code files needed</p>
+    <div class="code-block">terralens/
+├── integration/
+│   ├── hooks.py            ← PyTorch hook insertion
+│   ├── optimizer.py        ← TerraLensOptimizer class
+│   └── wrapper.py          ← wraps any existing model
+└── benchmarks/
+    ├── mnist_test.py       ← standard test
+    ├── cifar_test.py       ← harder image test
+    └── compare.py          ← TerraLens vs Adam vs SGD</div>
+    <hr class="divider">
+    <p class="section-label">What to measure and report</p>
+    <div class="grid2">
+      <div class="mini-card"><p class="mini-label">Speed</p><p class="mini-val">Training steps to reach 95% accuracy</p></div>
+      <div class="mini-card"><p class="mini-label">Quality</p><p class="mini-val">Final accuracy vs standard Adam optimizer</p></div>
+      <div class="mini-card"><p class="mini-label">Compute</p><p class="mini-val">Total GPU time used (seconds)</p></div>
+      <div class="mini-card"><p class="mini-label">Escapes</p><p class="mini-val">How many local minima successfully skipped</p></div>
+    </div>
+    <hr class="divider">
+    <p class="section-label">End of phase goal</p>
+    <div class="task-row"><div class="task-dot" style="background:#085041;"></div><div class="task-text">TerraLens trains a real neural network on real data. Results are measurably better than or equal to Adam with less wasted compute.</div></div>
+  </div>
+</div>
+
+<div class="phase-card">
+  <div class="phase-header" style="background: #FAECE7;">
+    <p class="phase-title" style="color: #712B13;">Phase 4 — Scale + optimize (months 19–24)</p>
+    <p class="phase-sub" style="color: #993C1D;">Make it fast. Make it work on larger networks.</p>
+  </div>
+  <div class="phase-body">
+    <p class="section-label">The dimensionality problem — your solution</p>
+    <div class="task-row"><div class="task-dot" style="background:#993C1D;"></div><div><div class="task-text">Group weights into clusters of 1000 (not all 175B at once)</div><div class="task-sub">Apply GPS+Radar+Satellite to each group separately. Groups interact through coordinator.</div></div></div>
+    <div class="task-row"><div class="task-dot" style="background:#993C1D;"></div><div><div class="task-text">Implement coordinate-wise decomposition</div><div class="task-sub">This is the mathematical technique that makes your approach scale. Research: "block coordinate descent"</div></div></div>
+    <div class="task-row"><div class="task-dot" style="background:#993C1D;"></div><div><div class="task-text">Move inner radar + skip calculations to C++ or CUDA</div><div class="task-sub">These are called millions of times. Python is too slow. C++ is 10-100x faster here.</div></div></div>
+    <hr class="divider">
+    <p class="section-label">C++ files to write</p>
+    <div class="code-block">terralens_core/          ← C++ package
+├── radar_fast.cpp       ← fast curvature computation
+├── skip_fast.cpp        ← fast jump calculation  
+├── grid_fast.cpp        ← fast box partitioning
+└── bindings.cpp         ← connects C++ to Python (use pybind11)</div>
+    <div class="task-row" style="margin-top:10px;"><div class="task-dot" style="background:#993C1D;"></div><div><div class="task-text">Use pybind11 to connect C++ to Python</div><div class="task-sub">This lets your Python code call your C++ functions. Standard approach in AI libraries.</div></div></div>
+    <hr class="divider">
+    <p class="section-label">Benchmark targets</p>
+    <div class="tag-row">
+      <span class="tag">ResNet-50 image classifier</span>
+      <span class="tag">BERT-small language model</span>
+      <span class="tag">GPT-2 small (117M params)</span>
+    </div>
+    <hr class="divider">
+    <p class="section-label">End of phase goal</p>
+    <div class="task-row"><div class="task-dot" style="background:#712B13;"></div><div class="task-text">TerraLens works on networks with 100M+ parameters. Speed improvement is measurable and significant.</div></div>
+  </div>
+</div>
+
+<div class="phase-card">
+  <div class="phase-header" style="background: #E6F1FB;">
+    <p class="phase-title" style="color: #0C447C;">Phase 5 — Research paper + open source (months 25–30)</p>
+    <p class="phase-sub" style="color: #185FA5;">Publish your work. Share with the world.</p>
+  </div>
+  <div class="phase-body">
+    <p class="section-label">Paper structure</p>
+    <div class="task-row"><div class="task-dot" style="background:#185FA5;"></div><div><div class="task-text">Section 1 — Problem: why non-convex optimization is unsolved</div></div></div>
+    <div class="task-row"><div class="task-dot" style="background:#185FA5;"></div><div><div class="task-text">Section 2 — TerraLens: satellite + GPS + radar + skip + map-while-building</div></div></div>
+    <div class="task-row"><div class="task-dot" style="background:#185FA5;"></div><div><div class="task-text">Section 3 — Experiments: MNIST, CIFAR, ResNet, GPT-2</div></div></div>
+    <div class="task-row"><div class="task-dot" style="background:#185FA5;"></div><div><div class="task-text">Section 4 — Results: speed, accuracy, compute comparison vs Adam/SGD</div></div></div>
+    <div class="task-row"><div class="task-dot" style="background:#185FA5;"></div><div><div class="task-text">Section 5 — Why it works: mathematical proof of skip mechanism</div></div></div>
+    <hr class="divider">
+    <p class="section-label">Where to submit</p>
+    <div class="task-row"><div class="task-dot" style="background:#185FA5;"></div><div><div class="task-text">arXiv.org first — free, instant, the whole AI world reads it</div></div></div>
+    <div class="task-row"><div class="task-dot" style="background:#185FA5;"></div><div><div class="task-text">NeurIPS or ICML conference — the two biggest AI research conferences</div></div></div>
+    <hr class="divider">
+    <p class="section-label">Open source release</p>
+    <div class="code-block">pip install terralens</div>
+    <div class="task-row" style="margin-top:8px;"><div class="task-dot" style="background:#185FA5;"></div><div class="task-text">Anyone can use TerraLens to train their own neural networks</div></div>
+    <div class="task-row"><div class="task-dot" style="background:#185FA5;"></div><div class="task-text">Full documentation, examples, tutorials on GitHub</div></div>
+  </div>
+</div>
+
+<div style="background: var(--color-background-secondary); border-radius: var(--border-radius-lg); padding: 16px 20px; margin-top: 8px;">
+  <p style="font-size: 13px; font-weight: 500; color: var(--color-text-primary); margin: 0 0 10px;">Where to start tomorrow</p>
+  <button class="action-btn" onclick="sendPrompt('Write me the exact Python code to create a 2-weight neural network and plot its 3D loss landscape for TerraLens Phase 1')">Write the first code ↗</button>
+  <button class="action-btn" onclick="sendPrompt('Explain the Hessian matrix and eigenvalues in simple terms for TerraLens radar implementation')">Explain Hessian math ↗</button>
+  <button class="action-btn" onclick="sendPrompt('Show me how PyTorch hooks work so I can integrate TerraLens into existing training loops')">PyTorch hooks guide ↗</button>
+</div>
