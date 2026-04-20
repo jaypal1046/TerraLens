@@ -30,6 +30,8 @@ pip-delete-this-directory.txt
 .idea/
 *.swp
 *.swo
+*.zip
+*.txt
 
 # Project Specific
 .agents/
