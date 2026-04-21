@@ -685,8 +685,9 @@ std::vector<std::vector<float>> MiniTransformer::forward(
         int token_id = tokens[i];
         if (token_id >= config_.vocab_size) token_id = 1;  // UNK
 
+        float scale = std::sqrt((float)config_.embedding_dim);
         for (int j = 0; j < config_.embedding_dim; j++) {
-            x[i][j] = weights_.token_embeddings[token_id][j] + weights_.position_embeddings[i][j];
+            x[i][j] = weights_.token_embeddings[token_id][j] * scale + weights_.position_embeddings[i][j];
         }
     }
 
@@ -800,8 +801,9 @@ std::vector<std::vector<float>> MiniTransformer::forward_incremental(
         int abs_pos = start_pos + i;
         if (abs_pos >= config_.max_seq_length) abs_pos = config_.max_seq_length - 1;
 
+        float scale = std::sqrt((float)config_.embedding_dim);
         for (int j = 0; j < config_.embedding_dim; j++) {
-            x[i][j] = weights_.token_embeddings[token_id][j] + weights_.position_embeddings[abs_pos][j];
+            x[i][j] = weights_.token_embeddings[token_id][j] * scale + weights_.position_embeddings[abs_pos][j];
         }
     }
 
@@ -1227,8 +1229,9 @@ std::vector<std::vector<float>> MiniTransformer::forward_with_cache(
     for (int i = 0; i < seq_len; i++) {
         int token_id = tokens[i];
         if (token_id >= config_.vocab_size) token_id = 1;
+        float scale = std::sqrt((float)config_.embedding_dim);
         for (int j = 0; j < config_.embedding_dim; j++) {
-            x[i][j] = weights_.token_embeddings[token_id][j] + weights_.position_embeddings[i][j];
+            x[i][j] = weights_.token_embeddings[token_id][j] * scale + weights_.position_embeddings[i][j];
         }
     }
 

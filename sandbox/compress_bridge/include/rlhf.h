@@ -130,6 +130,8 @@ void create_sample_sft_data(const std::string& output_file);
 void create_sample_comparisons(const std::string& output_file);
 void create_sample_prompts(const std::string& output_file);
 
+std::vector<std::string> load_json_array(const std::string& path);
+
 } // namespace rlhf
 
 #endif // RLHF_H

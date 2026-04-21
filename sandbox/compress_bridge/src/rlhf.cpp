@@ -27,7 +27,7 @@ static std::string extract_json_string(const std::string& json, const std::strin
     return json.substr(pos, end - pos);
 }
 
-static std::vector<std::string> load_json_array(const std::string& file_path) {
+std::vector<std::string> load_json_array(const std::string& file_path) {
     std::vector<std::string> result;
     std::ifstream file(file_path);
     if (!file) return result;
