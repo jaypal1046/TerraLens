@@ -177,8 +177,11 @@ private:
 
     // Activation functions
     float gelu(float x) const;
-    float gelu_derivative(float x) const;  // For backward pass
+    float gelu_derivative(float x) const;  
     float softmax_temperature(float x, float temp) const;
+
+    // Advanced Sampling (v9.0 Coherence)
+    int sample_top_p_top_k(const std::vector<float>& logits, float temperature, int k, float p, const std::vector<int>& history);
 
     // Precision conversion helpers (for mixed precision forward pass)
     void convert_weights_to_precision(

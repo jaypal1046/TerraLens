@@ -1,0 +1,30 @@
+Q: What is TerraLens? A: TerraLens is a hierarchical, C++-accelerated optimization engine designed for high-dimensional non-convex loss landscapes.
+Q: How does TerraLens treat optimization? A: TerraLens conceptualizes weight space as physical terrain and treats optimization as a topographic survey.
+Q: What are the four layers of the TerraLens engine? A: The layers are Satellite Scanner, GPS Grid, Radar Probe, and Skip Engine.
+Q: What is the Satellite Scanner? A: Layer 1 is the Satellite Scanner, which uses sparse Monte Carlo sampling to prune high-loss regions.
+Q: What is the GPS Grid? A: Layer 2 is the GPS Grid, which uses coordinate-wise decomposition for O(N) scaling.
+Q: What is the Radar Probe? A: Layer 3 is the Radar Probe, which uses C++ Hessian diagonal sensing to identify mountains versus valleys.
+Q: What is the Skip Engine? A: Layer 4 is the Skip Engine, which uses curvature-triggered jumps to bypass non-convex barriers.
+Q: What is the accuracy of TerraLens on MNIST? A: TerraLens achieved 96.6% accuracy on MNIST topographic mapping.
+Q: How fast can TerraLens map a landscape? A: It takes approximately 1.46 seconds to map a 10,000-parameter landscape.
+Q: What is the lattice compression ratio? A: TerraLens achieves 50x lattice compression compared to raw text storage.
+Q: What is the startup latency of the brain? A: The brain has a startup latency of less than 0.1 seconds using persistence-ready weights.
+Q: What architecture does the neural core use? A: The core is a 6-layer MiniTransformer with RMSNorm, RoPE, and KV-Caching.
+Q: What is the license for TerraLens? A: The code is under the MIT License and the research is under CC-BY-4.0.
+Q: How do I contribute? A: Please see the CONTRIBUTING.md file for details on our code of conduct and pull request process.
+Q: Who created TerraLens? A: TerraLens was created by Jayprakash Pal in 2026.
+Q: What is the purpose of Lattice Quantization? A: It projects semantic vectors onto discrete lattice points for 50x compression with zero semantic drift.
+Q: What is the Knowledge Bridge? A: The Knowledge Bridge synchronizes compressed neural weights with the semantic interaction engine.
+Q: How does the Radar probe classify terrain? A: It uses the Hessian diagonal to identify Valleys (convergent) and Mountains (non-convex barriers).
+Q: What is the Skip Engine jump formula? A: Delta W equals eta times the sign of the gradient divided by the absolute Hessian plus epsilon.
+Q: What is the statistical threshold tau? A: Tau is the viability threshold used by the Satellite scanner to define the active search space.
+Q: Is TerraLens portable? A: Yes, it is a pure C++17 core designed for high-efficiency CPU execution.
+Q: What acceleration kernels are used? A: TerraLens uses custom C++ kernels for Flash Attention and Hessian estimation.
+Q: Does TerraLens use AdamW? A: Yes, it uses AdamW integrated with Radar-guided gradient clipping.
+Q: What is the problem with standard optimizers? A: Optimizers like Adam and SGD are locally blind and can get trapped in non-convex barriers.
+Q: How do I interact with the brain? A: Run the interactive_brain.exe in the sandbox/compress_bridge/src directory.
+Q: What is the DOI for the TerraLens paper? A: The DOI is 10.5281/zenodo.19659907.
+Q: Where is the schematic for TerraLens? A: The schematic is located at ./paper/terralens_detailed_schematic.png.
+Q: What is the final loss on instruction-tuned sets? A: The final loss is typically less than 0.1.
+Q: How many curvature regions did TerraLens identify? A: It identified 4,750 high-curvature regions in 10,000 dimensions.
+Q: What does sgn(grad L) mean in the Skip Engine? A: It represents the sign of the gradient, directing the jump direction.

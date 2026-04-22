@@ -1,0 +1,26 @@
+AI: Artificial Intelligence.
+Neural: Relating to a network of artificial neurons.
+Transformer: A deep learning model that uses self-attention.
+Lattice: A regular repeating arrangement of points.
+Quantization: The process of mapping input values to a smaller set.
+Compression: Reducing the size of data for storage or transmission.
+Optimization: Making the best or most effective use of a resource.
+Hardware: The physical components of a computer.
+Software: The programs and other operating information used by a computer.
+Latency: The delay before a transfer of data begins.
+Throughput: The amount of material or items passing through a system.
+CPU: Central Processing Unit.
+GPU: Graphics Processing Unit.
+VRAM: Video Random Access Memory.
+RAM: Random Access Memory.
+Storage: The action or method of storing data for future use.
+Performance: How well a task is completed.
+Stability: The state of being stable.
+Recall: The ability to remember information.
+Inference: Reaching a conclusion based on evidence and reasoning.
+Training: The process of teaching a model using data.
+Dataset: A collection of data.
+Algorithm: A process or set of rules to be followed in calculations.
+Model: A mathematical representation of a real-world process.
+Precision: The quality, condition, or fact of being exact and accurate.
+Accuracy: The quality or state of being correct or precise.

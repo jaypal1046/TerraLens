@@ -6,11 +6,14 @@
 *.so
 *.dylib
 
-# Weights and Models
+# Weights and Models (Large binaries - move manually via USB/Cloud)
 *.bin
 *.pt
 *.pth
 *.h5
+*.weights
+.agents/*
+
 
 # Python Artifacts
 __pycache__/
@@ -31,12 +34,17 @@ pip-delete-this-directory.txt
 *.swp
 *.swo
 *.zip
-*.txt
 
-# Project Specific
-.agents/
-sandbox/compress_bridge/src/brain_weights.bin
-sandbox/compress_bridge/src/interactive_brain.exe
-sandbox/compress_bridge/bin/
-sandbox/compress_bridge/brain/
-*.weights
+# --- TerraLens Brain Logic ---
+# Allow technical knowledge and grammar files
+!/sandbox/compress_bridge/brain_data/**/*.txt
+!/sandbox/compress_bridge/brain_data/**/*.json
+!/sandbox/compress_bridge/brain_data/**/*.md
+
+# Ignore the heavy neural state files (Sync these via USB/Drive)
+/sandbox/compress_bridge/src/brain_weights.bin
+/sandbox/compress_bridge/src/semantic_vocab.bin
+/sandbox/compress_bridge/src/brain_config.bin
+/sandbox/compress_bridge/src/*.exe
+/sandbox/compress_bridge/bin/
+/sandbox/compress_bridge/brain/

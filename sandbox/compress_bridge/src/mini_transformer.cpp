@@ -2245,3 +2245,40 @@ float MiniTransformer::calculate_sequence_loss(const std::vector<int>& tokens, c
     
     return total_loss / std::max(1ULL, static_cast<unsigned long long>(targets.size()));
 }
+int MiniTransformer::sample_top_p_top_k(const std::vector<float>& logits, float temperature, int k, float p, const std::vector<int>& history) {
+    std::vector<std::pair<float, int>> probs;
+    float sum_exp = 1e-9f;
+    float max_logit = *std::max_element(logits.begin(), logits.end());
+
+    // 1. Temperature & Repetition Penalty
+    for (int i = 0; i < (int)logits.size(); i++) {
+        float l = logits[i] / std::max(temperature, 1e-6f);
+        for (int h : history) { if (i == h) { l -= 2.0f; break; } }
+        float e = std::exp(l - max_logit);
+        probs.push_back({e, i});
+        sum_exp += e;
+    }
+
+    // 2. Normalize and Sort
+    for (auto& pair : probs) pair.first /= sum_exp;
+    std::sort(probs.rbegin(), probs.rend());
+
+    // 3. Top-P/Top-K Nucleus Sampling
+    float cumulative_p = 0.0f;
+    int last_idx = 0;
+    for (int i = 0; i < (int)probs.size(); i++) {
+        cumulative_p += probs[i].first;
+        last_idx = i;
+        if (cumulative_p >= p || (k > 0 && i >= k)) break;
+    }
+    
+    // 4. Final Selection
+    float r = (float)rand() / RAND_MAX;
+    float current_p = 0.0f;
+    for (int i = 0; i <= last_idx; i++) {
+        current_p += (probs[i].first / cumulative_p);
+        if (r <= current_p) return probs[i].second;
+    }
+    return probs[0].second;
+}
+

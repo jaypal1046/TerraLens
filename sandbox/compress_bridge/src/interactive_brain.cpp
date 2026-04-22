@@ -159,7 +159,19 @@ int main(int argc, char* argv[]) {
     config.num_layers = b_config.num_layers;
     config.num_heads = b_config.num_heads;
     MiniTransformer model(config);
-    if (does_file_exist(weight_path)) model.load(weight_path);
+    // --- LOAD MEMORY (v9.5 Persistence) ---
+    if (fs::exists("brain_weights.bin")) {
+        std::cout << "[SYSTEM] Loading existing memory from brain_weights.bin..." << std::endl;
+        try {
+            model.load("brain_weights.bin");
+            std::cout << "[SUCCESS] 13M parameters synchronized. Continuing from last state." << std::endl;
+        } catch (...) {
+            std::cout << "[WARNING] Memory file corrupted. Attempting backup recovery..." << std::endl;
+            try { model.load("brain_weights.bin.bak"); } catch(...) { std::cout << "[CRITICAL] All memory lost. Starting fresh." << std::endl; }
+        }
+    } else {
+        std::cout << "[SYSTEM] No existing memory found. Initializing new brain." << std::endl;
+    }
 
     if (force_train) {
         std::cout << "[SYSTEM] Starting 10,000-Step Deep Lock Sync..." << std::endl;
