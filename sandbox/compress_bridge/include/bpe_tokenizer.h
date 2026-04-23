@@ -28,6 +28,12 @@ public:
     std::string token_to_string(int token_id) const;
     int string_to_token(const std::string& token) const;
 
+    // Special tokens
+    int get_pad_token() const { return pad_token_id_; }
+    int get_unk_token() const { return unk_token_id_; }
+    int get_bos_token() const { return bos_token_id_; }
+    int get_eos_token() const { return eos_token_id_; }
+
     // Persistence
     void save(const std::string& path) const;
     void load(const std::string& path);

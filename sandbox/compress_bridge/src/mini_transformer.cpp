@@ -894,65 +894,21 @@ std::vector<float> MiniTransformer::predict_next_with_cache(
     return logits;
 }
 
-std::string MiniTransformer::generate(
-    const std::string& prompt,
-    BPETokenizer& tokenizer,
-    int max_tokens,
-    float temperature,
-    int top_k
-) {
-    std::cerr << "[GENERATE] Prompt: \"" << prompt << "\"\n";
-
-    // Encode prompt
-    auto context = tokenizer.encode(prompt);
-
-    // Generate tokens autoregressively
+std::string MiniTransformer::generate(const std::string& prompt, BPETokenizer& tokenizer, int max_tokens, float temperature, int top_k) {
+    std::vector<int> tokens = tokenizer.encode(prompt);
+    std::vector<int> history;
     for (int i = 0; i < max_tokens; i++) {
-        // Predict next token probabilities
-        auto probs = predict_next(context);
-
-        // Apply temperature
-        for (float& p : probs) {
-            p = std::pow(p, 1.0f / temperature);
-        }
-
-        // Renormalize
-        float sum = 0.0f;
-        for (float p : probs) sum += p;
-        for (float& p : probs) p /= sum;
-
-        // Top-k sampling
-        std::vector<std::pair<float, int>> prob_idx;
-        for (int j = 0; j < (int)probs.size(); j++) {
-            prob_idx.push_back({probs[j], j});
-        }
-        std::partial_sort(prob_idx.begin(), prob_idx.begin() + top_k, prob_idx.end(),
-                          [](const auto& a, const auto& b) { return a.first > b.first; });
-
-        // Extract probabilities for top-k
-        std::vector<float> top_k_probs;
-        for (int j = 0; j < top_k && j < (int)prob_idx.size(); j++) {
-            top_k_probs.push_back(prob_idx[j].first);
-        }
-
-        // Sample from top-k
-        std::random_device rd;
-        std::mt19937 gen(rd());
-        std::discrete_distribution<> dist(top_k_probs.begin(), top_k_probs.end());
-
-        int sampled_idx = dist(gen);
-        int next_token = prob_idx[sampled_idx].second;
-
-        // Add to context
-        context.push_back(next_token);
-
-        // Stop if EOS token
-        if (next_token == 3) break;  // EOS token
+        if (tokens.size() >= (size_t)config_.max_seq_length) break;
+        std::vector<float> logits = predict_next(tokens);
+        int next_token = sample_top_p_top_k(logits, temperature, top_k, 0.9f, history);
+        if (next_token == tokenizer.get_eos_token() || next_token == 0) break;
+        tokens.push_back(next_token);
+        history.push_back(next_token);
+        if (history.size() > 15) history.erase(history.begin());
     }
-
-    // Decode
-    return tokenizer.decode(context);
+    return tokenizer.decode(tokens);
 }
+
 
 std::string MiniTransformer::generate_with_cache(
     const std::string& prompt,

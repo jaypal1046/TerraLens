@@ -4,6 +4,7 @@
 #include "knowledge_bridge.h"
 #include "knowledge_store.h"
 #include "lattice_quantizer.h"
+#include "bpe_tokenizer.h"
 #include <iostream>
 #include <string>
 #include <vector>
@@ -36,71 +37,15 @@ struct BrainConfig {
     }
 };
 
-class WordTokenizer {
-public:
-    std::map<std::string, int> word_to_id;
-    std::map<int, std::string> id_to_word;
-    int vocab_size = 0;
-    int min_freq = 5; // Increase min_freq to filter dictionary noise
-
-    void train(const std::vector<std::string>& corpus) {
-        if (load("semantic_vocab.bin")) return;
-        std::map<std::string, int> freq;
-        for (const auto& text : corpus) {
-            std::string cleaned = "";
-            for(char c : text) cleaned += (std::isalnum(c) || c == '\'' ? (char)std::tolower(c) : ' ');
-            std::stringstream ss(cleaned);
-            std::string word;
-            while (ss >> word) freq[word]++;
-        }
-        word_to_id["<pad>"] = 0; id_to_word[0] = "<pad>";
-        word_to_id["<eos>"] = 1; id_to_word[1] = "<eos>";
-        vocab_size = 2;
-        for (auto const& [word, count] : freq) {
-            if (count >= min_freq) { // Filter out rare words
-                word_to_id[word] = vocab_size;
-                id_to_word[vocab_size] = word;
-                vocab_size++;
-            }
-        }
-        save("semantic_vocab.bin");
-    }
-    void save(const std::string& path) {
-        std::ofstream f(path);
-        for (auto const& [word, id] : word_to_id) f << word << " " << id << "\n";
-    }
-    bool load(const std::string& path) {
-        std::ifstream f(path);
-        if (!f.good()) return false;
-        word_to_id.clear(); id_to_word.clear();
-        std::string word; int id;
-        while (f >> word >> id) {
-            word_to_id[word] = id;
-            id_to_word[id] = word;
-        }
-        vocab_size = id_to_word.size();
-        return true;
-    }
-    std::vector<int> encode(const std::string& text) {
-        std::vector<int> tokens;
-        std::string cleaned = "";
-        for(char c : text) cleaned += (std::isalnum(c) || c == '\'' ? (char)std::tolower(c) : ' ');
-        std::stringstream ss(cleaned);
-        std::string word;
-        while (ss >> word) if (word_to_id.count(word)) tokens.push_back(word_to_id[word]);
-        return tokens;
-    }
-    std::string decode(const std::vector<int>& tokens) {
-        std::string text = "";
-        for (int id : tokens) if (id_to_word.count(id)) text += id_to_word[id] + " ";
-        return text;
-    }
-};
-
 void ingest_directory(const std::string& path, std::vector<std::string>& corpus) {
     if (!fs::exists(path)) return;
+    std::cout << "[SYSTEM] Scanning: " << path << "..." << std::endl;
+    int count = 0;
     for (const auto& entry : fs::recursive_directory_iterator(path)) {
         if (entry.is_regular_file()) {
+            count++;
+            if (count % 100 == 0) std::cout << "   [SCAN] Found " << count << " files..." << std::flush << "\r";
+            
             std::string ext = entry.path().extension().string();
             if (ext == ".json") {
                 auto facts = rlhf::load_json_array(entry.path().string());
@@ -112,6 +57,7 @@ void ingest_directory(const std::string& path, std::vector<std::string>& corpus)
             }
         }
     }
+    std::cout << "\n[SYSTEM] Ingestion complete. Total files: " << count << std::endl;
 }
 
 bool does_file_exist(const std::string& name) {
@@ -123,27 +69,40 @@ int main(int argc, char* argv[]) {
     bool force_train = (argc > 1 && std::string(argv[1]) == "--train");
 
     std::cout << "===============================================" << std::endl;
-    std::cout << "🧠 TERRALENS: WEIGHTED TIER ENGINE (v6.5)" << std::endl;
-    std::cout << "Grammar Glue | Priority Sync Active" << std::endl;
+    std::cout << " TERRALENS: WEIGHTED TIER ENGINE (v6.5)" << std::endl;
+    std::cout << " Grammar Glue | Priority Sync Active" << std::endl;
     std::cout << "===============================================\n" << std::endl;
 
     std::vector<std::string> corpus;
     ingest_directory("../brain_data", corpus);
     
-    std::vector<std::string> facts;
-    std::vector<std::string> grammar;
-    std::vector<std::string> foundation;
-    for(const auto& s : corpus) {
-        if (s.find("Q:") != std::string::npos) facts.push_back(s);
-        else if (s.find(".") != std::string::npos && s.length() < 50) grammar.push_back(s);
-        else foundation.push_back(s);
+    std::vector<size_t> fact_indices;
+    std::vector<size_t> grammar_indices;
+    std::vector<size_t> foundation_indices;
+    
+    std::cout << "[SYSTEM] Sorting corpus via Zero-Copy Indexing..." << std::endl;
+    for(size_t i = 0; i < corpus.size(); i++) {
+        if (i % 100000 == 0) std::cout << "   [PROCESS] Mapping " << i << " lines..." << std::flush << "\r";
+        const auto& s = corpus[i];
+        if (s.find("Q:") != std::string::npos) fact_indices.push_back(i);
+        else if (s.find(".") != std::string::npos && s.length() < 50) grammar_indices.push_back(i);
+        else foundation_indices.push_back(i);
+    }
+    std::cout << "\n[SYSTEM] Indexing complete. Facts: " << fact_indices.size() << " | Grammar: " << grammar_indices.size() << std::endl;
+
+    std::cout << "[SYSTEM] Initializing BPE Tokenizer..." << std::endl;
+    BPETokenizer tokenizer(32000);
+    if (fs::exists("semantic_vocab.bin")) {
+        std::cout << "[SYSTEM] Loading existing vocabulary..." << std::endl;
+        tokenizer.load("semantic_vocab.bin");
+    } else {
+        std::cout << "[SYSTEM] Training BPE Tokenizer (5000 merges)..." << std::endl;
+        tokenizer.train(corpus, 5000); 
+        tokenizer.save("semantic_vocab.bin");
     }
 
-    WordTokenizer tokenizer;
-    tokenizer.train(corpus);
-
     BrainConfig b_config;
-    b_config.vocab_size = tokenizer.vocab_size + 10;
+    b_config.vocab_size = tokenizer.vocab_size() + 10;
     b_config.embedding_dim = 256;
     b_config.num_layers = 4;
     b_config.num_heads = 8;
@@ -151,7 +110,15 @@ int main(int argc, char* argv[]) {
 
     std::string weight_path = "brain_weights.bin";
     std::string config_path = "brain_config.bin";
-    if (does_file_exist(config_path)) b_config.load(config_path);
+    
+    std::cout << "[SYSTEM] Synchronizing Brain Config..." << std::endl;
+    if (fs::exists(config_path)) {
+        if (b_config.load(config_path)) {
+            std::cout << "[SUCCESS] Config synchronized. Vocabulary: " << b_config.vocab_size << std::endl;
+        } else {
+            std::cout << "[WARNING] Config mismatch. Re-calibrating for BPE..." << std::endl;
+        }
+    }
 
     TransformerConfig config;
     config.vocab_size = b_config.vocab_size;
@@ -159,18 +126,16 @@ int main(int argc, char* argv[]) {
     config.num_layers = b_config.num_layers;
     config.num_heads = b_config.num_heads;
     MiniTransformer model(config);
-    // --- LOAD MEMORY (v9.5 Persistence) ---
+    
     if (fs::exists("brain_weights.bin")) {
-        std::cout << "[SYSTEM] Loading existing memory from brain_weights.bin..." << std::endl;
+        std::cout << "[SYSTEM] Loading existing memory..." << std::endl;
         try {
             model.load("brain_weights.bin");
-            std::cout << "[SUCCESS] 13M parameters synchronized. Continuing from last state." << std::endl;
+            std::cout << "[SUCCESS] 13M parameters synchronized." << std::endl;
         } catch (...) {
-            std::cout << "[WARNING] Memory file corrupted. Attempting backup recovery..." << std::endl;
-            try { model.load("brain_weights.bin.bak"); } catch(...) { std::cout << "[CRITICAL] All memory lost. Starting fresh." << std::endl; }
+            std::cout << "[WARNING] Memory corrupted. Attempting backup..." << std::endl;
+            try { model.load("brain_weights.bin.bak"); } catch(...) { std::cout << "[CRITICAL] Memory lost." << std::endl; }
         }
-    } else {
-        std::cout << "[SYSTEM] No existing memory found. Initializing new brain." << std::endl;
     }
 
     if (force_train) {
@@ -179,28 +144,25 @@ int main(int argc, char* argv[]) {
         for (int iter = 0; iter < 10000; iter++) {
             float total_loss = 0; int samples = 0;
             
-            // 70% Grammar (The Structural Glue)
             for (int i = 0; i < 70; i++) {
-                if (grammar.empty()) break;
-                auto tokens = tokenizer.encode(grammar[rand() % grammar.size()]);
+                if (grammar_indices.empty()) break;
+                auto tokens = tokenizer.encode(corpus[grammar_indices[rand() % grammar_indices.size()]]);
                 if (tokens.size() < 2) continue;
                 total_loss += model.training_step(tokens, tokens, 5e-3f);
                 samples++;
             }
             
-            // 25% Facts (The Knowledge)
             for (int i = 0; i < 25; i++) {
-                if (facts.empty()) break;
-                auto tokens = tokenizer.encode(facts[rand() % facts.size()]);
+                if (fact_indices.empty()) break;
+                auto tokens = tokenizer.encode(corpus[fact_indices[rand() % fact_indices.size()]]);
                 if (tokens.size() < 2) continue;
                 total_loss += model.training_step(tokens, tokens, 8e-3f);
                 samples++;
             }
 
-            // 5% Foundation (The Vocabulary)
             for (int i = 0; i < 5; i++) {
-                if (foundation.empty()) break;
-                auto tokens = tokenizer.encode(foundation[rand() % foundation.size()]);
+                if (foundation_indices.empty()) break;
+                auto tokens = tokenizer.encode(corpus[foundation_indices[rand() % foundation_indices.size()]]);
                 if (tokens.size() < 2) continue;
                 total_loss += model.training_step(tokens, tokens, 1e-3f);
                 samples++;
@@ -215,39 +177,19 @@ int main(int argc, char* argv[]) {
                 b_config.save(config_path);
             }
             if (iter % 100 == 0) std::cout << "   [Priority Sync] Alignment: " << alignment << "%" << std::endl;
-            if (iter % 1000 == 0) {
-                std::cout << "   [Snapshot] Saving iteration " << iter << "..." << std::endl;
-                model.save(weight_path);
-            }
         }
     }
 
     while (true) {
         std::string user_input;
-        std::cout << "\n👤 You: ";
+        std::cout << "\n[USER]: ";
         std::getline(std::cin, user_input);
         if (user_input == "exit" || user_input == "quit") break;
 
-        std::cout << "🤖 Assistant: ";
-        auto tokens = tokenizer.encode(user_input);
-        if (tokens.empty()) { std::cout << "..." << std::endl; continue; }
-
-        for (int i = 0; i < 40; i++) {
-            auto logits = model.test_forward(tokens).back();
-            for (int j = std::max(0, (int)tokens.size() - 20); j < (int)tokens.size(); j++) logits[tokens[j]] -= 15.0f;
-            
-            std::vector<std::pair<float, int>> top_k;
-            for (int k = 0; k < (int)logits.size(); k++) top_k.push_back({logits[k], k});
-            std::sort(top_k.rbegin(), top_k.rend());
-            
-            int next_id = top_k[0].second;
-            if (next_id == 1 || next_id == 0) break; 
-            std::string word = tokenizer.id_to_word[next_id];
-            std::cout << word << " " << std::flush;
-            tokens.push_back(next_id);
-            if (word.back() == '.' || word.back() == '!' || word.back() == '?') break;
-        }
-        std::cout << std::endl;
+        std::cout << "[ASSISTANT]: ";
+        std::string response = model.generate(user_input, tokenizer, 50, 0.7f, 40);
+        std::cout << response << std::endl;
     }
+
     return 0;
 }
